@@ -86,14 +86,14 @@ GuiHwnd := WinExist()
 
 ; Priority section.
 Gui, Font, s10 q5, Segoe UI
-Gui, Add, Text,                          x10 y10, Priority:
+Gui, Add, Text,                          x10 y10, Select Process Priority:
 Gui, Add, DropDownList, vPriorityChoice  x10 y30 w150 r6, Idle|Below Normal|Normal|Above Normal|High|Realtime
 LoadSettings()
 Gui, Add, Text,                         x172 y10, Use Escape button for sound test or to quit T7ES3.
 Gui, Add, Button, gToggleMute vMuteBtn  x170 y30 w150 h27 +Center +0x200, % (muteSound ? "UNMUTE" : "MUTE")
-Gui, Add, Button, gSetPriority           x10 y60 w150 h75, SET PRIORITY
-Gui, Add, Button, gRefreshPath          x170 y60 w150 h75, REFRESH PATH
-Gui, Add, Button, gSett7es3Path         x330 y60 w150 h75, SET PATH
+Gui, Add, Button, gSetPriority           x10 y60 w150 h75, SET PROCESS PRIORITY
+Gui, Add, Button, gRefreshPath          x170 y60 w150 h75, REFRESH GAME PATH
+Gui, Add, Button, gSett7es3Path         x330 y60 w150 h75, SET GAME PATH AND/OR START THE GAME FROM HERE
 
 
 ; ─── Custom status bar, 1 is used for T7ES3 status, use 2 and 3. ──────────────────────────────────────────────────────
