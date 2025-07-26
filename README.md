@@ -10,3 +10,4 @@
 
 - Pressing the Escape button will kill all TekkenGame-Win64-Shipping.exe processes.
 
+![t7es3pc.png](images/t7es3pc.png)
