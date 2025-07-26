@@ -37,7 +37,7 @@ jobs:
           $versionDat  = "version.dat"
           $extraAssets = @(
             "README.txt",
-            "pc.ini",
+            "t7es3.ini",
             "LICENSE"
           )
 
