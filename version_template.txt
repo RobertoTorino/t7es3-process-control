@@ -1,0 +1,9 @@
+CompanyName=@game_play267
+FileDescription=RPCL3 Process Control
+FileVersion=%%VERSION%%
+InternalName=RPCL3 Process Control
+OriginalFilename=rpcl3pc.exe
+ProductName=RPCL3 Process Control
+ProductVersion=%%VERSION%%
+LegalCopyright=© 2025 Philip
+Comments=Built on %%DATETIME%% | Git Tag: %%GIT_TAG%%
