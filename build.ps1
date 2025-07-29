@@ -152,7 +152,7 @@ Write-Host "Timestamp: $timestamp"
 
 # === COPY OUTPUT TO NEW_BUILDS FOLDER ===
 try {
-    $buildFolder = "C:\repos\t7es3pc-process-control\new_builds"
+    $buildFolder = "C:\repos\t7es3-process-control\new_builds"
     $outputFiles = @(
         $finalExe,
         $zipName,
