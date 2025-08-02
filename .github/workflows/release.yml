@@ -32,7 +32,7 @@ jobs:
           $input       = "t7es3pc.ahk"
           $output      = "t7es3pc.exe"
           $zipName     = "t7es3pc_release.zip"
-          $icon        = "t7es3_media\t7es3v2.ico"
+          $icon        = "t7es3_media\default.ico"
           $versionTxt  = "version.txt"
           $versionDat  = "version.dat"
           $extraAssets = @(
