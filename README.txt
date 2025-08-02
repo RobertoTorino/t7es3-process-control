@@ -1,9 +1,9 @@
-RPCL3 Process Control - RPCL3PC
+T7ES3 Process Control - T7ES3PC
 
-Process Control Manager for RPCS3
+Process Control Manager for T7ES3
 
 Instructions:
-Just run the rpcl3pc.exe.
+Just run the t7es3pc.exe.
 
 Features:
 - Set process priority for rpcs3.exe.
@@ -11,4 +11,4 @@ Features:
 - Pressing the Escape button will kill all rpcs3.exe processes.
 
 Release
-- rpcl3pc.exe: original EXE
+- t7es3pc.exe: original EXE
