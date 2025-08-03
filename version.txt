@@ -1,0 +1,9 @@
+CompanyName=@game_play267
+FileDescription=T7ES3 Process Control
+FileVersion=%%VERSION%%
+InternalName=T7ES3 Process Control
+OriginalFilename=t7es3pc
+ProductName=T7ES3 Process Control
+ProductVersion=%%VERSION%%
+LegalCopyright=© 2025 Philip
+Comments=Built on 20250719_01 | Git Tag: %%GIT_TAG%%

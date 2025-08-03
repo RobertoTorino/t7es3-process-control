@@ -1,0 +1,108 @@
+name: CI Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # Trigger on version tags like v1.0.0
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up UTF-8 and PowerShell output
+        shell: pwsh
+        run: |
+          $OutputEncoding = [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+          Write-Host "Using PowerShell version: $($PSVersionTable.PSVersion)"
+
+      - name: Build EXE, move to root, UPX and create ZIP
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+
+          $ahkCompiler = "ahk\Compiler\Ahk2Exe.exe"
+          $baseFile    = "ahk\Compiler\Unicode 32-bit.bin"
+          $input       = "t7es3pc.ahk"
+          $output      = "t7es3pc.exe"
+          $zipName     = "t7es3pc_release.zip"
+          $icon        = "t7es3_media\default.ico"
+          $versionTxt  = "version.txt"
+          $versionDat  = "version.dat"
+          $extraAssets = @(
+            "README.txt",
+            "t7es3.ini",
+            "LICENSE"
+          )
+
+          foreach ($file in @($ahkCompiler, $baseFile, $input)) {
+            if (!(Test-Path $file)) {
+              Write-Error "Required file not found: $file"
+              exit 1
+            }
+            Write-Host ":: Found: $file"
+          }
+
+          # --- Compile ---
+          & $ahkCompiler /in $input /out $output /icon $icon /base $baseFile
+
+          # --- Always move EXE to $env:GITHUB_WORKSPACE ---
+          $repoRoot = $env:GITHUB_WORKSPACE
+          $compiledExe = Join-Path $PWD $output
+          $finalExe    = Join-Path $repoRoot $output
+
+          # Normal move/copy logic
+          if ((Test-Path $compiledExe) -and ($compiledExe -ne $finalExe)) {
+            Move-Item $compiledExe $finalExe -Force
+            Write-Host ":: Moved EXE to $finalExe"
+          }
+
+          # Deep magic: if not found, check hardcoded place and copy
+          if (!(Test-Path $finalExe)) {
+            $knownGood = "D:\a\t7es3-process-control\t7es3-process-control\t7es3pc.exe"
+            if (Test-Path $knownGood) {
+              Write-Host ":: Found EXE at $knownGood after all! Copying to $finalExe"
+              Copy-Item $knownGood $finalExe -Force
+            }
+          }
+
+          Write-Host "Looking for output at: $finalExe"
+          Start-Sleep -Seconds 2 # optional, for timing issues
+          if (!(Test-Path $finalExe)) {
+            Write-Error ":: Build failed — output exe still not found at $finalExe"
+            exit 1
+          }
+
+          # --- UPX ---
+          if (Test-Path "upx\upx.exe") {
+            & "upx\upx.exe" --best --lzma $finalExe
+          }
+
+          # --- ZIP ---
+          $toZip = @($finalExe)
+          foreach ($asset in $extraAssets) {
+            $assetAbs = Join-Path $repoRoot $asset
+            if (Test-Path $assetAbs) {
+              $toZip += $assetAbs
+              Write-Host ":: Added to zip: $assetAbs"
+            } else {
+              Write-Warning "Not adding (missing): $assetAbs"
+            }
+          }
+          $zipPath = Join-Path $repoRoot $zipName
+          Compress-Archive -Path $toZip -DestinationPath $zipPath -Force
+
+      - name: Upload EXE and ZIP to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            t7es3pc.exe
+            t7es3pc_release.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
